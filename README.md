@@ -1,1 +1,2 @@
 # DB-lab-Project
+This database is designed for a charity. Donors in this charitable institution have the possibility to pay the desired amounts online. These amounts are sent to Accounts under the supervision of charity. also it is possible that the helpers receive a box and put some amounts in it and then, in certain intervals, the box receiver receives the boxes and delivers them to The charity organization.
