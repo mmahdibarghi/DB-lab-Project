@@ -103,7 +103,7 @@ CREATE TABLE PayToCharity (
 	[AccountID] [int] NOT NULL,
 	[AdminID] [int] NOT NULL,
 	[Amount] [money] Not NULL,
-	[PaymentDate] [date] NOT NULL,
+	[PaymentDate] [date] NOT NULL DEFAULT getdate(),,
 	[PaymentType] [varchar](10) NOT NULL,
 	[Authority] [varchar](256),
 	[RefCode] [varchar](256),
