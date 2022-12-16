@@ -1,5 +1,7 @@
- INSERT INTO Donation( AccountId, ClientID, Amount)
- VALUES (1, 2, 9);
+INSERT INTO Donation( AccountId, ClientID, Amount)
+VALUES (1, 2, 8),(2, 1, 2);
+select * from PersonInNeed
+select * from Helper
 
 insert into Donation (DonationId, AccountId, ClientId, Amount, Date) values (1, 32, 45, '$2.04', '12/14/2021');
 insert into Donation (DonationId, AccountId, ClientId, Amount, Date) values (2, 58, 44, '$1.86', '9/9/2022');
