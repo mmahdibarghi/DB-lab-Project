@@ -1,15 +1,3 @@
-create table PersonInNeed (
-	PersonInNeedId INT,
-	FirstName VARCHAR(50),
-	LastName VARCHAR(50),
-	NationalCode VARCHAR(50),
-	PhoneNumber VARCHAR(50),
-	Address VARCHAR(50),
-	PostCode VARCHAR(50),
-	Status VARCHAR(50),
-	CreateDate DATE,
-	TotalMoneyReceived VARCHAR(50)
-);
 insert into PersonInNeed (PersonInNeedId, FirstName, LastName, NationalCode, PhoneNumber, Address, PostCode, Status, CreateDate, TotalMoneyReceived) values (1, 'Jeramey', 'Bansal', '5849637438', '98779786341', '5 Carey Avenue', '0425124837', 'ACTIVE', '8/2/2022', '$65581.66');
 insert into PersonInNeed (PersonInNeedId, FirstName, LastName, NationalCode, PhoneNumber, Address, PostCode, Status, CreateDate, TotalMoneyReceived) values (2, 'Dodi', 'O''Scanlan', '9462132751', '98970173082', '19 Karstens Lane', '2315497115', 'ACTIVE', '9/28/2021', '$9093.47');
 insert into PersonInNeed (PersonInNeedId, FirstName, LastName, NationalCode, PhoneNumber, Address, PostCode, Status, CreateDate, TotalMoneyReceived) values (3, 'Any', 'Chattock', '4519396316', '98499929835', '5 Shasta Drive', '7511510514', 'ACTIVE', '12/16/2021', '$62720.71');
