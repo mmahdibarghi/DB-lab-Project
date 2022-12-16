@@ -37,3 +37,16 @@ FROM PayToCharity) as Temp
 )
 )
 END;
+
+
+
+CREATE TRIGGER UpdateTotalHelp
+ON PayToCharity
+After INSERT	
+AS
+    SElect @amountInserted = inserted.amount from inserted
+    select @helperId = inserted.helperId from inserted
+	Update Helper
+    set TotalHelped = TotalHelped + @amountInserted
+    where Helper.HelperId = @helperId
+

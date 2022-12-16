@@ -39,3 +39,16 @@ AND tmpTable.PaymentDate < tmpTable2.PaymentDate
 WHERE tmpTable2.HelperID IS NULL And tmpTable.PaymentDate < DATEADD(m,-2,GETDATE())
 
 
+
+
+
+CREATE FUNCTION HelperAVG (@HelperNationalCode varchar(10))
+RETURNS TABLE
+AS
+RETURN
+(
+  select avg(amount)
+  from Helper join PayToCharity on Helper.HelperID = PayToCharity.HelperID
+  when DATEDIFF(day, GETDATE(), PayToCharity.Date) <= 365
+  and Helper.NationalCode = HelperNationalCode
+);
