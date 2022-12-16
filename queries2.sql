@@ -149,7 +149,7 @@ CREATE FUNCTION GetMostInNeedQuarter()
 RETURNS TABLE 
 AS 
 RETURN
-SELECT *
+SELECT * 
  FROM 
  (SELECT 
     PersonInNeedId ,

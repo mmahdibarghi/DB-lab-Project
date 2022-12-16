@@ -1,8 +1,8 @@
-CREATE FUNCTION FindOutHelper()
+CREATE FUNCTION GetMostInNeedQuarter()
 RETURNS TABLE 
 AS 
 RETURN
-SELECT *
+SELECT * 
  FROM 
  (SELECT 
     PersonInNeedId ,
@@ -19,31 +19,21 @@ SELECT *
 	FROM  PersonInNeed ) as Temp
  WHERE quartile = 1;
 
-SELECT * FROM GetMostInNeedQuarter();
 
 
-
-select * from PayToCharity INNER JOIN Helper ON Helper.HelperID = PayToCharity.HelperID
-where PaymentDate > getdate()
-
-
-
-SELECT a.username, a.date, a.value
-FROM myTable a
-LEFT OUTER JOIN myTable b
-ON a.username = b.username 
-AND a.date < b.date
-WHERE b.username IS NULL
-ORDER BY a.date desc;
-
-
-
+ 
+CREATE FUNCTION GetHelperWithOutRecentlyHelp()
+RETURNS TABLE 
+AS Return
+WITH tmpTable(HelperID, LastName, FirstName, PaymentDate) as
+(select Helper.HelperID, LastName, FirstName, PaymentDate
+from PayToCharity INNER JOIN
+Helper ON Helper.HelperID = PayToCharity.HelperID) 
+SELECT tmpTable.HelperID, tmpTable.LastName, tmpTable.FirstName, tmpTable.PaymentDate
+FROM tmpTable
+LEFT OUTER JOIN tmpTable as tmpTable2
+ON tmpTable.HelperID = tmpTable2.HelperID 
+AND tmpTable.PaymentDate < tmpTable2.PaymentDate
+WHERE tmpTable2.HelperID IS NULL And tmpTable.PaymentDate < DATEADD(m,-2,GETDATE())
 
 
-select HelperID, LastName, FirstName, PaymentDate
-from PayToCharity INNER JOIN Helper ON Helper.HelperID = PayToCharity.HelperID ResultTable
-inner join (
-    select HelperID, max(PaymentDate) as MaxDate
-    from PayToCharity INNER JOIN Helper ON Helper.HelperID = PayToCharity.HelperID
-    group by HelperID
-) TmpTable on ResultTable.HelperID = TmpTable.HelperID and ResultTable.PaymentDate = TmpTable.MaxDate
