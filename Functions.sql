@@ -21,6 +21,8 @@ SELECT *
 
 
 
+
+
  
 CREATE FUNCTION GetHelperWithOutRecentlyHelp()
 RETURNS TABLE 
