@@ -1,8 +1,7 @@
 CREATE TRIGGER ChangeInNeedPersonTotalRecivedMoney
 ON Donation
 AFTER INSERT
-AS BEGIN
-Select * from inserted;
+AS BEGIN	
 UPDATE PersonInNeed 
 SET PersonInNeed.TotalMoneyReceived = 
 (
@@ -11,6 +10,33 @@ HAVING  ClientID IN (SELECT ClientID FROM inserted)
 )
 Where PersonInNeed.PersonInNeedID IN (SELECT ClientID FROM inserted)
 END;
+
+
+
+
+
+
+
+
+
+CREATE TRIGGER ChangeInNeedPersonTotalRecivedMoney
+ON Donation
+AFTER INSERT
+AS BEGIN	
+UPDATE PersonInNeed 
+SET PersonInNeed.TotalMoneyReceived =TotalMoneyReceived + 
+(select SUM(Amount) FROM inserted GROUP BY ClientID)
+Where PersonInNeed.PersonInNeedID IN (SELECT ClientID FROM inserted GROUP BY ClientID)
+END;
+
+
+drop trigger ChangeInNeedPersonTotalRecivedMoney
+
+
+
+
+
+
 
 
 
@@ -37,6 +63,44 @@ FROM PayToCharity) as Temp
 )
 )
 END;
+
+
+
+
+CREATE TRIGGER ChangeAccountBalance
+ON PayToCharity
+AFTER INSERT
+AS BEGIN	
+UPDATE Account 
+SET TotalBalance =TotalBalance + 
+(select SUM(Amount) FROM inserted GROUP BY AccountID HAVING Account.AccountID = inserted.AccountID)
+Where Account.AccountID IN (SELECT AccountID FROM inserted GROUP BY AccountID)
+END;
+
+
+drop TRIGGER ChangeAccountBalance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
