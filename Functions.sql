@@ -47,8 +47,23 @@ RETURNS TABLE
 AS
 RETURN
 (
-  select avg(amount)
-  from Helper join PayToCharity on Helper.HelperID = PayToCharity.HelperID
-  when DATEDIFF(day, GETDATE(), PayToCharity.Date) <= 365
-  and Helper.NationalCode = HelperNationalCode
+  select avg(PayToCharity.Amount) as AvaregePayment
+  from Helper inner join PayToCharity on Helper.HelperID = PayToCharity.HelperID
+  WHERE DATEDIFF(day, GETDATE(), PayToCharity.PaymentDate) <= 365
+  and Helper.NationalCode = '2048854941' 
 );
+
+select * from Helper
+
+
+CREATE TRIGGER UpdateTotalHelp
+ON PayToCharity
+After INSERT  
+AS
+  DECLARE @amountInserted
+    DECLARE @helperId
+    SElect @amountInserted = inserted.amount from inserted
+    select @helperId = inserted.helperId from inserted
+  Update Helper
+    set TotalHelped = TotalHelped + @amountInserted
+    where Helper.HelperId = @helperId

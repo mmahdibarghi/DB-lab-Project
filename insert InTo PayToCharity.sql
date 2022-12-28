@@ -5,14 +5,16 @@
  VALUES (306,5,1,1,1,1000,'2021-11-27','CharityBox',1)
 
  INSERT INTO PayToCharity(HelperID,CharityBoxID,CharityBoxReceiverID,AccountID,AdminID,Amount,PaymentDate,PaymentType,HasPaid)
- VALUES (306,5,1,1,1,1000,'2022-10-27','CharityBox',1)
+ VALUES (302,5,1,1,1,1000,'2022-10-27','CharityBox',1)
 
 
   INSERT INTO PayToCharity(HelperID,CharityBoxID,CharityBoxReceiverID,AccountID,AdminID,Amount,PaymentDate,PaymentType,HasPaid)
- VALUES (307,5,1,1,1,1000,'2021-11-27','CharityBox',1)
+ VALUES (307,5,1,1,1,750,'2021-11-27','CharityBox',1),
+(307,5,1,2,1,250,'2021-11-27','CharityBox',1)
 
  select * from PersonInNeed
 select * from Helper
+select * from Account
 insert into PayToCharity (HelperID, CharityBoxID, CharityBoxReceiverID, AccountID, AdminID, Amount, PaymentDate, PaymentType, HasPaid) values (375, 5, 2, 3, '1', '$38.67', '2022-11-23', 'CharityBox', '1');
 insert into PayToCharity (HelperID, CharityBoxID, CharityBoxReceiverID, AccountID, AdminID, Amount, PaymentDate, PaymentType, HasPaid) values (339, 5, 5, 2, '1', '$13.59', '2022-06-28', 'CharityBox', '1');
 insert into PayToCharity (HelperID, CharityBoxID, CharityBoxReceiverID, AccountID, AdminID, Amount, PaymentDate, PaymentType, HasPaid) values (351, 5, 4, 1, '1', '$82.77', '2022-08-15', 'CharityBox', '1');
