@@ -92,18 +92,51 @@ WSGI_APPLICATION = 'charity.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "mssql",
+#         "NAME": "GenerousHeart",
+#         "USER": "generousAdmin",
+#         "PASSWORD": "generousAdmin",
+#         "HOST": "localhost",
+#         "PORT": "1433",
+#         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
+#         },
+#     },
+# }
+
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "mssql",
+#         "NAME": "GenerousHeart_Django",
+#         "USER": "generousAdmin",
+#         "PASSWORD": "generousAdmin",
+#         "HOST": "localhost",
+#         "PORT": "1433",
+#         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
+#         },
+#     },
+# }
+
+
+
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
-        "NAME": "GenerousHeart",
-        "USER": "generousAdmin",
-        "PASSWORD": "generousAdmin",
+        "NAME": "GenTest",
+        "USER": "YENAFAR",
+        "PASSWORD": "YENAFAR",
         "HOST": "localhost",
         "PORT": "1433",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
         },
     },
 }
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

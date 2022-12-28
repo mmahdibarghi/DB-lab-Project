@@ -4,148 +4,146 @@ from django_jalali.db import models as jmodels
 
 class Helper(models.Model):
     ACTIVE='ACTIVE'
-    INACTIVE='INACTIVE'
-    UNKNOWN='NUKKNOW'
+    DEACTIVE='DEACTIVE'
+    
     choices_status=[
         (ACTIVE,'Active'),
-        (INACTIVE,'Inactive'),
-        (UNKNOWN,'Unknown')            
+        (DEACTIVE,'deactive')          
                     ]
-    first_name=models.CharField(max_length=255)
-    last_name=models.CharField(max_length=255)
-    national_code=models.CharField(max_length=10,null=True,unique=True,blank=True)
-    phone_number=models.CharField(max_length=12,null=True,blank=True)
-    address=models.TextField(null=True,blank=True)
-    post_code=models.CharField(max_length=10,null=True,blank=True)
-    status=models.CharField(max_length=8,choices=choices_status,default=UNKNOWN)
-    
-    #creating_date=models.TimeField(auto_now_add=True)
-    creating_date=jmodels.jDateField(auto_now_add=True)
+    HelperID = models.AutoField(primary_key=True)
+    FirstName=models.CharField(max_length=55)
+    LastName=models.CharField(max_length=55)
+    NationalCode=models.CharField(max_length=10,null=False,unique=True,blank=False)
+    PhoneNumber=models.CharField(max_length=13,null=False,blank=False)
+    Address=models.TextField(null=False,blank=False)
+    PostCode=models.CharField(max_length=10,null=False,blank=False)
+    Status=models.CharField(max_length=10,choices=choices_status,default=ACTIVE,null=False,blank=False)
+    TotalHelped=models.BigIntegerField()
+    CreatingDate=jmodels.jDateField(auto_now_add=True,null=False)
     #auto new add for first create
     def __str__(self) -> str:
-        return self.last_name +" "+ self.first_name
+        return self.LastName +" "+ self.FirstName
     class Meta:
-        ordering=['last_name','first_name']
+        ordering=['LastName','FirstName']
 class CharityBox(models.Model):
-    PLASTICB='PLASTICB'
-    PLASTICS='PLASTICS'
-    FELEZIB='FELEZIB'
-    FELEZIS='FELEZIS'
+    BIG_PLASTIC='BIG-PLASTIC'
+    SMALL_PLASTIC='SMALL-PLASTIC'
+    BIG_STEEL='BIG-STEEL'
+    SMALL_STEEL='SMALL-STEEL'
     type_choices=[
-        (PLASTICB,'PlasticBig'),
-        (PLASTICS,'PlasticBig'),
-        (FELEZIB,'FeleziBig'),
-        (FELEZIS,'FeleziSmall'),
-        
+        (BIG_PLASTIC,'Big-Plastic'),
+        (SMALL_PLASTIC,'Small-Plastic'),
+        (BIG_STEEL,'Big-Steel'),
+        (SMALL_STEEL,'Small-Steel')    
     ]
     ACTIVE='ACTIVE'
-    INACTIVE='INACTIVE'
-    UNKNOWN='NUKKNOW'
+    DEACTIVE='DEACTIVE'
+    ARCHIVE='Archive'
     choices_status=[
         (ACTIVE,'Active'),
-        (INACTIVE,'Inactive'),
-        (UNKNOWN,'Unknown')            
+        (DEACTIVE,'Deactive'),
+        (ARCHIVE,'Archive')            
                     ]
-    code=models.CharField(max_length=255,unique=True)
-    typee=models.CharField(max_length=8,choices=type_choices)
-    status=models.CharField(max_length=8,choices=choices_status,default=UNKNOWN)
-    strting_date=jmodels.jDateField(auto_now_add=True)
-    Helper=models.ForeignKey(Helper,on_delete=models.PROTECT,null=True,blank=True)
+    CharityBoxID=models.AutoField(primary_key=True)
+    Code=models.IntegerField(null=False,blank=False,unique=True)
+    Type=models.CharField(max_length=50,choices=type_choices)
+    Status=models.CharField(max_length=10,choices=choices_status,default=ACTIVE,null=False,blank=False)
+    StartDate=jmodels.jDateField(auto_now_add=True)
+    HelperID=models.ForeignKey(Helper,on_delete=models.PROTECT,null=False,blank=False,default=None)
     def __str__(self) -> str:
         return str(self.pk)
     class Meta:
         ordering=['pk']
 
 class Assign(models.Model):
-    date=jmodels.jDateField(auto_now_add=True)
-    sandogh_Helperieh=models.ForeignKey(CharityBox,on_delete=models.PROTECT)
-    tavilgirandeh=models.ForeignKey('Receiver',on_delete=models.PROTECT)
+    AssignID = models.AutoField(primary_key=True)
+    AssignDate=jmodels.jDateField(auto_now_add=True)
+    CharityBoxID=models.ForeignKey(CharityBox,on_delete=models.PROTECT)
+    CharityBoxReceiverID=models.ForeignKey('CharityBoxReceiver',on_delete=models.PROTECT)
     
     
-class Receiver(models.Model):
-    first_name=models.CharField(max_length=255)
-    last_name=models.CharField(max_length=255)
-    national_code=models.CharField(max_length=10,null=True,unique=True,blank=True)
-    # national code can be null?????? yes
-    phone_number=models.CharField(max_length=12)
-    create_date=jmodels.jDateField(null=False,auto_now_add=True)
+class CharityBoxReceiver(models.Model):
+    CharityBoxReceiverID = models.AutoField(primary_key=True)
+    FirstName = models.CharField(max_length=255)
+    LastName = models.CharField(max_length=255)
+    NationalCode = models.CharField(max_length=10,null=False,unique=True,blank=False)
+    PhoneNumber = models.CharField(max_length=13,null=False,blank=False)
+    CreatingDate = jmodels.jDateField(null=False,auto_now_add=True)
     
     def __str__(self) -> str:
-        return self.last_name +" "+ self.first_name
+        return self.LastName +" "+ self.FirstName
     class Meta:
-        ordering=['last_name','first_name']
+        ordering=['LastName','FirstName']
 
-class Payment(models.Model):
+class PayToCharity(models.Model):
     CART='CART'
     CASH='CASH'
-    SANDOGH='SANDOGH'
+    BOX='BOX'
     typechoice=[
         (CART,'Cart'),
         (CASH,'Cash'),
-        (SANDOGH,'Sandogh'),
+        (BOX,'Box'),
     ]
-    Helper=models.ForeignKey(Helper,on_delete=models.PROTECT,null=True,default=None,blank=True)
-    sandogh_Helperieh=models.ForeignKey(CharityBox,on_delete=models.PROTECT,null=True,default=None,blank=True)
-    tahvilgirandeh_sandogh=models.ForeignKey(Receiver,on_delete=models.PROTECT,null=True,default=None,blank=True)
-    hesab_moaseseh=models.ForeignKey('Account',on_delete=models.PROTECT)
-    #admin_id
-    amount=models.BigIntegerField()
-    date=jmodels.jDateField(auto_now=True)
+    PaymentID=models.AutoField(primary_key=True)
+    HelperID=models.ForeignKey(Helper,on_delete=models.PROTECT,null=False,blank=False)
+    CharityBoxID=models.ForeignKey(CharityBox,on_delete=models.PROTECT,null=False,blank=False)
+    CharityBoxReceiverID=models.ForeignKey(CharityBoxReceiver,on_delete=models.PROTECT,null=False,blank=False)
+    AccountID=models.ForeignKey('Account',on_delete=models.PROTECT,null=False,blank=False)
+    Amount=models.BigIntegerField()
+    PaymentDate=jmodels.jDateField(auto_now=True,null=False)
     '''date for last modify or create date'''
-    typee=models.CharField(max_length=7,choices=typechoice,default=CASH,null=True,blank=True)
-    authority=models.CharField(max_length=200,null=True,blank=True)
-    ref_code=models.CharField(max_length=12,null=True,blank=True)
-    has_paid=models.CharField(max_length=12,null=True,blank=True)
-    #max_length of ref and has ??????
-    card_number=models.CharField(max_length=16,null=True,blank=True)
-
-    #cart number or account number????
-    Helper_bank=models.CharField(max_length=255,null=True,blank=True)
-    description=models.TextField(null=True,blank=True)
+    PaymentType=models.CharField(max_length=10,choices=typechoice,default=BOX,null=True,blank=True)
+    authority=models.CharField(max_length=255,null=True,blank=True)
+    ref_code=models.CharField(max_length=255,null=True,blank=True)
+    HasPaid=models.BooleanField(default=True,null=False,blank=False)
+    CardNumber=models.CharField(max_length=16,null=True,blank=True)
+    Bank=models.CharField(max_length=30,null=True,blank=True)
+    Description=models.TextField(max_length=200, null=True,blank=True)
     
     def __str__(self) -> str:
         return str(self.pk)
     class Meta:
-        ordering=['date']
+        ordering=['PaymentDate']
         
         
 class Account(models.Model):
-    name=models.CharField(max_length=255)
-    account_number=models.CharField(max_length=10)
-    
-    cart_number=models.CharField(max_length=16)
-    
+    AccountID = models.AutoField(primary_key=True)
+    Name = models.CharField(max_length=30,null=False,blank=False)
+    AccountNum = models.CharField(max_length=12)
+    CardNum = models.CharField(max_length=16)
+    TotalBalance = models.BigIntegerField(default=0)
     def __str__(self) -> str:
-        return self.name
+        return self.Name
     class Meta:
-        ordering=['name']
+        ordering=['Name']
 
 class Donation(models.Model):
-    hesab_moaseseh=models.ForeignKey(Account,on_delete=models.PROTECT)
-    PersonInNeed=models.ForeignKey('PersonInNeed',on_delete=models.PROTECT)
-    amount=models.BigIntegerField()
-    date=jmodels.jDateField(auto_now=True)
+    DonationID=models.AutoField(primary_key=True)
+    AccountID=models.ForeignKey(Account,on_delete=models.PROTECT,null=False,blank=False)
+    ClientID=models.ForeignKey('PersonInNeed',on_delete=models.PROTECT,null=False,blank=False)
+    Amount=models.BigIntegerField(null=False,blank=False)
+    Date=jmodels.jDateField(auto_now=True,null=False)
     '''date for create date'''
 
 class PersonInNeed(models.Model):
     ACTIVE='ACTIVE'
-    INACTIVE='INACTIVE'
-    UNKNOWN='NUKKNOW'
+    DEACTIVE='DEACTIVE'
     choices_status=[
         (ACTIVE,'Active'),
-        (INACTIVE,'Inactive'),
-        (UNKNOWN,'Unknown')            
+        (DEACTIVE,'deactive')          
                     ]
-    first_name=models.CharField(max_length=255)
-    last_name=models.CharField(max_length=255)
-    national_code=models.CharField(max_length=10,null=True,unique=True,blank=True)
-    phone_number=models.CharField(max_length=12,null=True,blank=True)
-    address=models.TextField(null=True,blank=True)
-    post_code=models.CharField(max_length=10,null=True,blank=True)
-    status=models.CharField(max_length=8,choices=choices_status,default=UNKNOWN)
-    creating_date=jmodels.jDateField()
+    PersonInNeedID=models.AutoField(primary_key=True)
+    FirstName=models.CharField(max_length = 30,null=False,blank=False)  
+    LastName=models.CharField(max_length = 30, null=False,blank=False)
+    NationalCode=models.CharField(max_length=10,null=False,blank=False,unique=True)
+    PhoneNumber=models.CharField(max_length=13,null=False,blank=False)
+    Address=models.TextField(max_length=60,null=False,blank=False)
+    PostCode=models.CharField(max_length=10,null=True,blank=True)
+    Status=models.CharField(max_length=10,choices=choices_status,default=ACTIVE)
+    TotalMoneyReceived=models.BigIntegerField(default=0,null=False,blank=False)
+    CreateDate=jmodels.jDateField(auto_now=True,null=False)
     def __str__(self) -> str:
-        return self.last_name +" "+ self.first_name
+        return self.LastName +" "+ self.FirstName
     class Meta:
-        ordering=['last_name','first_name']
+        ordering=['LastName','FirstName']
     
